@@ -1,13 +1,14 @@
 package config
 
 import (
-	"fmt"
+	"fmt" // provides functions for formatting and printing strings.
 
-	"github.com/backend-magang/eniqilo-store/utils/pkg"
-	"github.com/spf13/viper"
+	"github.com/backend-magang/eniqilo-store/utils/pkg" // an internal package (pkg) providing a SQL transaction service.
+	"github.com/spf13/viper"                            // Viper is a popular Go library for working with configuration files and env variables.
 )
 
 type Config struct {
+	// CONFIGURATION STRUCT
 	AppHost    string `mapstructure:"APP_HOST"`
 	AppPort    string `mapstructure:"APP_PORT"`
 	DBName     string `mapstructure:"DB_NAME"`
@@ -20,6 +21,11 @@ type Config struct {
 	JWTSecret  string `mapstructure:"JWT_SECRET"`
 	BCryptSalt string `mapstructure:"BCRYPT_SALT"`
 	SqlTrx     *pkg.SqlWithTransactionService
+
+	/* This struct defines the configuration for the application.
+	It contains fields for various settings such as application host, port, database connection details, JWT secret, etc.
+	The mapstructure tags are used to map configuration keys to struct fields when unmarshaling configuration data.
+	(just in case you forget what 'marshal' and 'unmarshal' means go to common-concepts notes on discord*/
 }
 
 func Load() (conf Config) {
@@ -35,6 +41,11 @@ func Load() (conf Config) {
 	}
 
 	return
+
+	/* lOAD FUNCTION: Here, Load() is a function responsible for loading configuration settings.
+	It first sets the paths for configuration files (env and .env).
+	Then, it reads the configuration files using viper and unmarshals the configuration data into a Config struct.
+	If any error occurs during reading or unmarshaling, it panics. */
 }
 
 func (cfg *Config) GetDSN() (dsn string) {
@@ -48,4 +59,10 @@ func (cfg *Config) GetDSN() (dsn string) {
 		cfg.DBParams,
 		cfg.DBSchema,
 	)
+
+	/* GetDSN method:  a method to generate a DSN string for connecting to a PostgreSQL database
+	This method, GetDSN(), is associated with the Config struct.
+	It generates a Database Source Name (DSN) string used for establishing a connection to a PostgreSQL database.
+	It formats the connection string using the database-related fields from the Config struct. */
+
 }
